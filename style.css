@@ -1,0 +1,296 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    font-family: roboto;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+html {
+    background-color: #F7F7EF;
+    background-color: #F9F9F9;
+}
+
+.crcl {
+    border-radius: 50%;
+}
+
+.content {
+    max-width: 1200px;
+    width: 90%;
+    margin: auto;
+}
+
+.flx-row,
+.flx-col {
+    display: flex;
+}
+
+.flx-col {
+    flex-direction: column;
+}
+
+.contents {
+    display: flex;
+    flex-direction: column;
+    /* margin-top: 50px; */
+    gap: 10px;
+}
+
+section {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hide{
+    display: none;
+}
+
+textarea:disabled{
+    background-color: #b0b0b0 !important;
+    border: 2px solid black;
+}
+
+
+/* 
+████████ ██    ██ ██████  ██ ███    ██  ██████      ████████ ███████ ███████ ████████ 
+   ██     ██  ██  ██   ██ ██ ████   ██ ██              ██    ██      ██         ██    
+   ██      ████   ██████  ██ ██ ██  ██ ██   ███        ██    █████   ███████    ██    
+   ██       ██    ██      ██ ██  ██ ██ ██    ██        ██    ██           ██    ██    
+   ██       ██    ██      ██ ██   ████  ██████         ██    ███████ ███████    ██    
+                                                                                       */
+
+.hero{
+    align-items: center;
+    justify-content: space-around;
+    height: 20vh;
+    width: 90%;
+    margin: auto;
+}
+.soundIcon{
+    padding: 10px;
+    cursor: pointer;
+    align-items: center;
+    align-self:flex-start;
+    width: 200px;
+    user-select: none;
+}
+.hero h1{
+    align-self:center;
+}
+
+
+.soundIcon p{
+    position: relative;
+    font-weight: 500;
+    opacity: 0;
+
+}
+.soundIcon p.animate{
+    animation: soundState 0.8s ease-out forwards;
+    letter-spacing: -0.5rem;
+}
+
+@keyframes soundState{
+    50%{
+        letter-spacing: 0.1rem;
+    }
+    70%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+
+.soundOff{
+    fill: grey;
+}
+.soundOff .sound{
+    display: none;
+}
+
+section.Typing-speed {
+    background-color: #111111;
+    font-family: 'Merriweather,serif';
+    position: relative;
+    height: 50vh;
+    overflow: hidden;
+}
+
+section.Typing-speed .bg{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    --gold :#d0a756;
+    --white : #F9F9F9;
+    --grey:#746e6e;
+    scale: 2;
+    translate: -50% -50%;
+    background-color: var(--white);
+}
+.TypingTestContainer {
+    gap: 30px;
+    margin: auto;
+    position: relative;
+}
+
+.TypingTestContainer .details {
+    justify-content: space-around;
+    font-size: 1.5em;
+    transition: all 0.3s ease-in-out;
+}
+.TypingTestContainer .result {
+    color: rgb(0, 0, 0);
+    text-align: center;
+    flex: 0.5;
+}
+
+
+
+.TypingTestContainer .wordsShow,
+.TypingTestContainer .inputWords textarea {
+    background-color: #F6F6F7;
+    border-radius: 10px;
+    font-size: 1.5em;
+    box-shadow: 7px 5px 10px 0px #bababa;
+
+}
+
+.TypingTestContainer .wordsShow {
+    height: 150px;
+    overflow: hidden;
+    padding: 20px 40px;
+    font-size: 2em;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    background: #1111;
+    background: #F6F6F7;
+    border-top: 1px solid #5a5a5a;
+    border-bottom: 1px solid #5a5a5a;
+    position: relative;
+
+}
+
+
+.TypingTestContainer .wordsShow .words,.user-input {
+    position: relative;
+    left:50%;
+    transition: all 0.3s ease-out;
+}
+
+.TypingTestContainer .wordsShow .user-input{
+    position: absolute;
+    top: 10px;
+}
+
+.TypingTestContainer .wordsShow .words span.randWords {
+    padding: 5px;
+    min-height: 45px;
+    max-height: 45px;
+    margin-bottom: 25px;
+}
+
+span.wrong {
+    color: red;
+}
+
+span.right {
+    color: green;
+}
+
+.highlighter {
+    background-color: #00ffd93b;
+    position: absolute;
+    left: 50%;
+    transition: all 0.5s ease-out;
+}
+
+
+.TypingTestContainer .inputWords {
+    gap: 5px;
+    width: 80%;
+    margin: auto;
+}
+
+.TypingTestContainer .inputWords textarea {
+    height: 60px;
+    padding: 10px 20px;
+    flex: 8 0 0;
+    resize: none;
+
+}
+
+
+.TypingTestContainer .inputWords .resetButton,
+.options {
+    background-color: #171717;
+    border: 1px solid #5a5a5a;
+    flex: 2;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    color: white;
+    text-transform: capitalize;
+    text-align: center;
+    transition: background-color 0.2s ease-in-out ;
+}
+
+
+.TypingTestContainer .inputWords .resetButton:hover{
+    background-color:#459e4b;
+}
+
+.TypingTestContainer .inputWords .resetButton.stopButton:hover{
+    background-color:#9e4545;
+
+}
+
+section.result{
+    /* align-items: baseline; */
+    background-color:   #F9F9F9;
+    height: 50vh;
+}
+
+section.result table ,td{
+    border-collapse: collapse;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 5px 15px;
+    text-transform: capitalize;
+    font-size: 1.2em;
+}
+
+section.result table{
+    border: 1px solid black;
+    width: 500px;
+    height: 200px;
+}
+.wpm{
+    text-align: center;
+    border: none;
+}
+
+tr td:nth-child(2){
+    text-align: center;
+}
