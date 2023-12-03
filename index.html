@@ -9,7 +9,9 @@
 </head>
 
 <body>
-
+    <div class="touchScreen hide">Sorry, this website is not compatible with touch devices yet :(
+        Please Use a device with a physical keyboard.
+    </div>
     <div class="contents">
         <div class="hero flx-col">
             <div class="soundIcon  flx-col">
@@ -56,12 +58,26 @@
                         </div>
                     </div>
                     <div class="inputWords flx-row">
-                        <textarea name="" id="" cols="30" rows="10"></textarea>
+                        <textarea name="" id="" cols="30" rows="10" ></textarea>
                         <div class="resetButton"></div>
                         <select name="" id="" class="options">
                             <option value="1">1 minute</option>
                             <option value="0">No timer</option>
                         </select>
+
+                        <div class="testDifficulty">
+                            <label>
+                              <input type="radio" name="options" value="0" checked> Easy
+                            </label>
+                            <br>
+                            <label>
+                              <input type="radio" name="options" value="1"> Medium 
+                            </label>
+                            <br>
+                            <label>
+                              <input type="radio" name="options" value="2"> Hard
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>

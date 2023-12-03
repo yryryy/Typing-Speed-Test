@@ -17,6 +17,7 @@ const typTest_words = document.querySelector('.TypingTestContainer .wordsShow .w
 // The input stream above the right words
 const input_stream  = document.querySelector('.TypingTestContainer .wordsShow .user-input');
 
+
 let Result = document.querySelector('section.result');
 let highlighter =document.querySelector('.TypingTestContainer .wordsShow .highlighter');
 
@@ -29,7 +30,9 @@ let test_words_count = {'total':0,'wrong':0,'right':0};
 
 let test_duration = 60;
 let NumberOfWords = 300;
-let minimumRightWords = 5;
+let minimumAccuracy = 0.5;
+let difficulty =0; // 0:easy, 1:medium , 2:hard
+
 /*
     The highest typing speed ever recorded was 216 words per minute (wpm), set by Stella Pajunas in 1946 
     [ last updated : December 2023 ]
@@ -43,6 +46,8 @@ let timerObject = {
     'Timer': null
 }
 
+
+
 /* 
 ██     ██  ██████  ██████  ██████       ██████  ███████ ███    ██ ███████ ██████   █████  ████████ ███████ 
 ██     ██ ██    ██ ██   ██ ██   ██     ██       ██      ████   ██ ██      ██   ██ ██   ██    ██    ██      
@@ -51,14 +56,46 @@ let timerObject = {
  ███ ███   ██████  ██   ██ ██████       ██████  ███████ ██   ████ ███████ ██   ██ ██   ██    ██    ███████ 
  */
 
+function complexifyWord(word , lvl){
+
+    let dime = Math.floor(Math.random()*lvl)+1;
+    if(dime == 1){
+        word= word.toUpperCase();
+    }else if(dime == 2 ){
+        word =  word.slice(0,1).toUpperCase() + word.slice(1);
+    }else if (dime == 5){
+        let hardDime = Math.floor(Math.random()*2)+1;
+        if(hardDime == 1){
+            word= word.toUpperCase();
+        }else {
+            word =  word.slice(0,1).toUpperCase() + word.slice(1);
+        }
+
+
+        let special = ['.' , ',' ,"\'" ,"?","!"];
+        let random = Math.floor(Math.random()*special.length);
+        word= word + special[random];
+
+    }
+    return word;
+}
 
 // Generate Random words 
 function getRandom(count) {
+
     let randomWords = [];
     for (let i = 0; i < count; i++) {
         let randomIndex = Math.floor(Math.random() * commonWords.length);
-        randomWords.push(commonWords[randomIndex]);
+        let word = commonWords[randomIndex];
+        
+        if(difficulty ==1){ // medium 
+            word = complexifyWord(word , 15);
+        }else if( difficulty ==2){ // Hard
+            word = complexifyWord(word , 8);
+        }
+        randomWords.push(word);
     }
+
     return randomWords;
 }
 
@@ -163,7 +200,8 @@ function resetTimer() {
 */
 
 function test_reset(state) {
-    
+    typTest_input.setAttribute('placeholder', 'You can press Enter to stop the test');
+
     // Show Result
     if(state != 'start'){
         scrolltoResult();
@@ -216,6 +254,7 @@ function formatTimer() {
     if no timeLimit is specified the timer runs forever until its stopped by the user
 */
 function startTimer(timeLimit = -1) {
+    typTest_input.setAttribute('placeholder', '');
 
     if(!Result.classList.contains('hide')){
         Result.classList.add('hide');
@@ -287,12 +326,14 @@ function get_result() {
 
 
 function scrolltoResult(){
-
-    
-    if( test_words_count['right'] < minimumRightWords  ){
-        typTest_input.value = `you need to type at least ${minimumRightWords} To get your results`;
+    if( test_words_count['right']/test_words_count['total'] < minimumAccuracy  ){
+        typTest_input.value = `Accuracy too low results can't be shown.`;
+        return 0;
+    }else if(test_words_count['total'] <1){
+        typTest_input.value = `Type at least one word`;
         return 0;
     }
+
     // Show the Result section
     if(Result.classList.contains('hide')){
         Result.classList.remove('hide');
@@ -324,6 +365,30 @@ function scrolltoResult(){
     });
 }
 
+/* 
+██████  ██ ███████ ███████ ██  ██████ ██    ██ ██      ████████ ██    ██     
+██   ██ ██ ██      ██      ██ ██      ██    ██ ██         ██     ██  ██      
+██   ██ ██ █████   █████   ██ ██      ██    ██ ██         ██      ████       
+██   ██ ██ ██      ██      ██ ██      ██    ██ ██         ██       ██        
+██████  ██ ██      ██      ██  ██████  ██████  ███████    ██       ██        
+*/
+const difficulty_options =  document.getElementsByName('options');
+for(let i =0; i<difficulty_options.length ; i++){
+    if( difficulty_options[i].checked ){
+        break;
+    }
+}
+difficulty_options.forEach((option)=>{
+    option.addEventListener('click' , (e)=>{
+        difficulty = e.target.value;
+        typTest_input.value = '';
+        test_reset('start');
+    });                                                                
+});
+
+
+
+
 
 /* 
 ██   ██  █████  ███    ██ ██████  ██      ███████     ██ ███    ██ ██████  ██    ██ ████████ 
@@ -335,7 +400,6 @@ function scrolltoResult(){
 
 
 // Sound
-
 let soundOn = 0;
 let sounndIcon = document.querySelector('.soundIcon');
 let soundText = document.querySelector('.soundIcon p');
@@ -369,6 +433,7 @@ user_choice.addEventListener('change' , ()=>{
 
 
 
+
 // Starts/stops the test when the button is clicked 
 typTest_reset.addEventListener('click', ()=>{
 
@@ -389,10 +454,14 @@ typTest_reset.addEventListener('click', ()=>{
         typTest_input.focus();
 
     }else if(timerObject.TimerState == 1){
+        typTest_input.setAttribute('placeholder', 'You can press Enter to stop the test');
+
         test_reset();
 
     }
 });
+
+
 
 
 // Handle words related processing
@@ -415,6 +484,7 @@ typTest_input.addEventListener('keydown', function (e) {
     
     if(e.key == 'Enter'){
         e.preventDefault();
+        test_reset();
     }
 
     let userInput = typTest_input.value;
@@ -471,8 +541,7 @@ let previousInputLength = -1;
 typTest_input.addEventListener('keyup' , (e)=>{
     let CorrectValue = document.querySelector(`span[spanmbr = "${currentWord}"]`).textContent;
     let currentInputLength = typTest_input.value.trim().length;
-
-    if (!( /^[^\d.\.]$/.test(e.key))) {
+    if (!( /^[^\d.]$/.test(e.key))) {
         e.preventDefault();
     }
 
@@ -555,7 +624,7 @@ Notes to self:
         1: when user press ctrl+a
             - the A appears at the end of the input stream
 
-            - If users continues to type and not delete,
+            - If users continues to type and not delete, //* Solved 
                 the a and other pressed key will appear at the end of input-stream
                 and the red color will indicate that the letters are wrong  
 
@@ -572,3 +641,7 @@ Notes to self:
 
 
 
+window.addEventListener('touchstart' , ()=>{
+    let blackScreen = document.querySelector('.touchScreen');
+    blackScreen.classList.remove('hide');
+});
